@@ -19,15 +19,20 @@
 package info.bits.phoneastablet;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.stericson.RootShell.RootShell;
 
 import java.io.IOException;
 
@@ -52,6 +57,8 @@ public class Resolution extends Activity {
     private DatabaseHandler dbHandler;
     private NotificationHandler notificationHandler;
 
+    private boolean rootAvailable = false, wmAvailable = false;
+
     /**
      * Creates the activity.
      *
@@ -62,9 +69,26 @@ public class Resolution extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resolution);
 
-        createDB();
+        //check if su exists
+        if (RootShell.isRootAvailable()) {
+            rootAvailable = true;
+            //check if wm exists
+            if (SuCommands.wmExists()) {
+                wmAvailable = true;
+            }
+        }
 
-        setupViews();
+        if (!rootAvailable) {
+            showAlertDialog(getString(R.string.dialog_title_root), getString(R.string.dialog_desc_root));
+
+        } else if (!wmAvailable) {
+            showAlertDialog(getString(R.string.dialog_title_wm), getString(R.string.dialog_desc_wm));
+        }
+
+        if (rootAvailable && wmAvailable == true) {
+            createDB();
+            setupViews();
+        }
     }
 
     /**
@@ -114,6 +138,21 @@ public class Resolution extends Activity {
             stopService(new Intent(this, OrientationService.class));
             notificationHandler.disableNotification();
         }
+    }
+
+    private final void showAlertDialog(String title, String description) {
+        new AlertDialog.Builder(this)
+                .setTitle(title)
+                .setMessage(description)
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.exit), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                        finish();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     /**

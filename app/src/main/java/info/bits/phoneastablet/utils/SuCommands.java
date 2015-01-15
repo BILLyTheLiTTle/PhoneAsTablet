@@ -18,6 +18,8 @@
 
 package info.bits.phoneastablet.utils;
 
+import android.util.Log;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -27,6 +29,34 @@ import java.io.IOException;
  *         An utility class that runs the superuser's commands.
  */
 public final class SuCommands {
+
+    public static boolean wmExists() {
+        try {
+            Process suProcess;
+            suProcess = Runtime.getRuntime().exec("su");
+            DataInputStream dis = new DataInputStream(suProcess.getInputStream());
+            DataOutputStream dos = new DataOutputStream(suProcess.getOutputStream());
+            dos.writeBytes("wm size");
+            dos.flush();
+            dos.close();
+            StringBuilder sb = new StringBuilder();
+            int read = 0;
+            while (read != -1) {
+                read = dis.read();
+                if (read != -1)
+                    sb.append((char) read);
+            }
+            dis.close();
+            if (sb.toString().toLowerCase().contains("size")) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        } catch (IOException ioe) {
+            return false;
+        }
+    }
 
     /**
      * Modifies the current resolution according to user's preferences.
@@ -94,7 +124,6 @@ public final class SuCommands {
         pixels[0] = physicalResolution.substring(2, physicalResolution.indexOf("x"));
         pixels[1] = physicalResolution.substring(
                 physicalResolution.indexOf("x") + 1, physicalResolution.length());
-
         return pixels;
     }
 
