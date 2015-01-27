@@ -56,7 +56,7 @@ public class NotificationHandler {
                 .setContentIntent(PendingIntent.getActivity(context, 0, new Intent(), 0))
                 .setContentTitle(context.getString(R.string.app_name))
                 .setContentText(context.getString(R.string.notification_private_text))
-                .setSmallIcon(R.drawable.ic_launcher);
+                .setSmallIcon(R.drawable.ic_stat_notify_app);
         nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         Notification notification = builder.build();
         notification.flags |= Notification.FLAG_ONGOING_EVENT;
