@@ -14,7 +14,7 @@
     <string name="landscape_resolution_prompt">Resolution for Landscape mode is:</string>
     <string name="mirror_portrait">Same as Portrait mode</string>
     <string name="apply">Apply Resolution</string>
-    <string name="resolution_policy_prompt">Resolution must change:</string>
+    <string name="resolution_policy_prompt">Resolution applies:</string>
     <string-array name="policies">
         <item>Only from the button below\n(default resolution after reboot)</item>
         <item>Dynamically change resolution\n(run in background and on boot)</item>

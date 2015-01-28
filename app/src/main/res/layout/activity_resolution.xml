@@ -108,7 +108,7 @@
             android:layout_alignLeft="@+id/portrait_resolution_prompt_textView"
             android:layout_below="@+id/landscape_resolution_height"
             android:layout_marginTop="30dp"
-            android:text="@string/landscape_resolution_prompt" />
+            android:text="@string/resolution_policy_prompt" />
         
         <Spinner
     		android:id="@+id/resolution_policy"
