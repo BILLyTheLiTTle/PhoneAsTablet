@@ -105,14 +105,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      * @param dimens default resolution dimension for the device
      */
     public void saveDefaultResolution(String... dimens) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues defaultValues = new ContentValues();
-        defaultValues.put(KEY_ID, 1);
-        defaultValues.put(KEY_DEFAULT_WIDTH, dimens[0]);
-        defaultValues.put(KEY_DEFAULT_HEIGHT, dimens[1]);
-        db.insert(TABLE_DEFAULT_RESOLUTION, null, defaultValues);
+        if(getDefaultResolution()[0]==null) {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues defaultValues = new ContentValues();
+            defaultValues.put(KEY_ID, 1);
+            defaultValues.put(KEY_DEFAULT_WIDTH, dimens[0]);
+            defaultValues.put(KEY_DEFAULT_HEIGHT, dimens[1]);
+            db.insert(TABLE_DEFAULT_RESOLUTION, null, defaultValues);
 
-        db.close();
+            db.close();
+        }
     }
 
     /**
