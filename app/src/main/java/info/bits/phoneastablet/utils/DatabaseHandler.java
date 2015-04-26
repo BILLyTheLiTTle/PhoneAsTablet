@@ -118,18 +118,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     /**
-     * Returns the defautl resolution values for the device.
+     * Returns the default resolution values for the device.
      *
      * @return the default resolution values
      */
     public String[] getDefaultResolution() {
+        String[] result = new String[2];
         String countQuery = "SELECT * FROM " + TABLE_DEFAULT_RESOLUTION + " WHERE _id=1";
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
-        cursor.moveToFirst();
-        String[] result = new String[2];
-        result[0] = cursor.getString(cursor.getColumnIndex(KEY_DEFAULT_WIDTH));
-        result[1] = cursor.getString(cursor.getColumnIndex(KEY_DEFAULT_HEIGHT));
+        if(cursor!=null && cursor.getCount()>0) {
+            cursor.moveToFirst();
+            result[0] = cursor.getString(cursor.getColumnIndex(KEY_DEFAULT_WIDTH));
+            result[1] = cursor.getString(cursor.getColumnIndex(KEY_DEFAULT_HEIGHT));
+        }
         db.close();
         return result;
     }
